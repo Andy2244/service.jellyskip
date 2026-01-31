@@ -49,6 +49,11 @@ class DialogueHandler:
             # We are past the segment, no need to schedule
             return
 
+        # If we seeked back to before the segment, reset last_item to allow re-showing
+        if self.last_item and current_seconds < self.last_item.get_start_seconds():
+            LOG.info(f"Resetting last_item as we seeked back before segment start")
+            self.last_item = None
+
         if item.get_start_seconds() < current_seconds:
             self.open_gui(item)
         else:
