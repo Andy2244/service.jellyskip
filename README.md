@@ -16,21 +16,24 @@ Skip Jellyfin media segments (intros/outros) in Kodi with a button prompt or aut
 
 ## Installation
 
-### Option 1: Install via Repository (Recommended)
+### Option 1: Add Repository Source (Recommended)
 
-This method enables automatic updates.
+No download required - add the repo URL directly in Kodi:
 
-1. Download the repository: [repository.andy2244.zip](https://github.com/Andy2244/kodi-repo/raw/main/zips/repository.andy2244/repository.andy2244-1.0.0.zip)
-2. In Kodi: **Settings** → **Add-ons** → **Install from zip file**
-3. Select the downloaded `repository.andy2244-1.0.0.zip`
-4. Go to **Install from repository** → **Andy2244's Repository** → **Services** → **Jellyskip**
-5. Click **Install**
+1. In Kodi: **Settings** → **File Manager** → **Add source**
+2. Click `<None>` and enter: `https://raw.githubusercontent.com/Andy2244/kodi-repo/main/zips/`
+3. Name it `Andy2244` and click **OK**
+4. Go to **Settings** → **Add-ons** → **Install from zip file**
+5. Select `Andy2244` → `repository.andy2244` → install the repository zip
+6. Go to **Install from repository** → **Andy2244's Repository** → **Services** → **Jellyskip**
+7. Click **Install**
 
-### Option 2: Manual Install from ZIP
+### Option 2: Manual ZIP Download
 
-1. Download the latest release: [service.jellyskip.zip](https://github.com/Andy2244/kodi-repo/raw/main/zips/service.jellyskip/service.jellyskip-1.1.0.zip)
+1. Download: [repository.andy2244.zip](https://github.com/Andy2244/kodi-repo/raw/main/zips/repository.andy2244/repository.andy2244-1.0.0.zip)
 2. In Kodi: **Settings** → **Add-ons** → **Install from zip file**
 3. Select the downloaded zip
+4. Then install Jellyskip from the repository
 
 > **CoreELEC/LibreELEC:** If installation fails, go to **Power** → **Restart Kodi** and try again.
 
