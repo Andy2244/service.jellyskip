@@ -1,4 +1,4 @@
-import xbmcgui, xbmc
+import xbmcgui, xbmc, xbmcaddon
 from xbmcgui import ACTION_NAV_BACK, ACTION_PREVIOUS_MENU, ACTION_STOP
 
 import helper.utils as utils
@@ -23,6 +23,11 @@ class SkipSegmentDialogue(xbmcgui.WindowXMLDialog):
         self.player = xbmc.Player()
 
     def onInit(self):
+        # Read setting here (not at module level) so changes take effect without restart
+        autoskip = xbmcaddon.Addon('service.jellyskip').getSettingBool('autoskip')
+        if autoskip:
+            self.onClick(OK_BUTTON)
+            return
         skip_label = 'Skip ' + str(self.segment_type)
         skip_button = self.getControl(OK_BUTTON)
         skip_button.setLabel(skip_label)

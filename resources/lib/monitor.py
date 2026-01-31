@@ -39,6 +39,7 @@ class JellySkipMonitor(xbmc.Monitor):
         LOG.info('JellySkipMonitor: player stop event')
         jf_hack.reset_itemid()
         dialogue_handler.cancel_scheduled()
+        dialogue_handler.last_item = None  # reset to allow re-showing dialogue for same segment if replayed
         LOG.info('JellySkipMonitor: reset itemid')
 
     def _event_handler_player_start(self, **_kwargs):
