@@ -17,16 +17,20 @@ LOG = LazyLogger(__name__)
 
 class SkipSegmentDialogue(xbmcgui.WindowXMLDialog):
 
-    def __init__(self, xmlFile, resourcePath, seek_time_seconds, segment_type):
+    def __init__(self, xmlFile, resourcePath, seek_time_seconds, segment_type, is_initial_play=False):
         self.seek_time_seconds = seek_time_seconds
         self.segment_type = segment_type
         self.player = xbmc.Player()
+        self.is_initial_play = is_initial_play
 
     def onInit(self):
         # Read setting here (not at module level) so changes take effect without restart
         autoskip = xbmcaddon.Addon('service.jellyskip').getSettingBool('autoskip')
         if autoskip:
-            xbmc.executebuiltin('Notification(Jellyskip, Skipped %s, 2000)' % self.segment_type)
+            # Delay 5 seconds on initial play to let TV sync/blank settle
+            if self.is_initial_play:
+                xbmc.sleep(5000)
+            xbmc.executebuiltin('Notification(Jellyskip, Skipped %s, 3000)' % self.segment_type)
             self.onClick(OK_BUTTON)
             return
         skip_label = 'Skip ' + str(self.segment_type)

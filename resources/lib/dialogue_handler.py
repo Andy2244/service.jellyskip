@@ -22,6 +22,7 @@ class DialogueHandler:
         self.dialogue = None
         self.scheduled_thread = None
         self.last_item = None
+        self.is_initial_play = False
 
     def schedule_skip_gui(self, item: MediaSegmentItem, current_seconds):
         """
@@ -143,8 +144,10 @@ class DialogueHandler:
         self.last_item = item
         LOG.info(f"Opening dialogue for {item.get_segment_type_display()} at {item.get_start_seconds()}")
         self.close_gui()
+        initial_play = self.is_initial_play
+        self.is_initial_play = False  # Reset after first use
         dialog = SkipSegmentDialogue('script-dialog.xml', addonPath, seek_time_seconds=item.get_end_seconds(),
-                                     segment_type=item.get_segment_type_display())
+                                     segment_type=item.get_segment_type_display(), is_initial_play=initial_play)
         self.dialogue = dialog
         dialog.doModal()
         del dialog
