@@ -1,69 +1,62 @@
 # Jellyskip
 
-Jellyskip is a Kodi service that interacts with the Jellyfin Media Segments API to provide a button for skipping media segments such as intros and outros. This tool enhances your media watching experience by allowing you to easily skip unwanted segments with a single click.
+Skip Jellyfin media segments (intros/outros) in Kodi with a button prompt or automatically.
 
-For example use [intro-skipper](https://github.com/intro-skipper/intro-skipper) jellyfin addon to create intro segments for your media files.
-Then install this addon in Kodi alongside [jellyfin kodi](https://github.com/jellyfin/jellyfin-kodi) addon to skip the intro segments.
+## Features
 
-
-## Usage
-
-
-<details> 
-  <summary>Presents a button to skip media segments (e.g., intro, outro)</summary>
-    <img src="https://i.imgur.com/hL62YyN.png" alt=""/>
-</details>
+- **Skip Button** - Shows a "Skip Intro" / "Skip Outro" button when entering a segment
+- **Auto Skip** - Automatically skip segments without interaction (with brief notification)
+- **Seek-back Detection** - Re-shows skip prompt when seeking back into a segment
 
 ## Requirements
-- *Jellyfin Server 10.10.0* or later (with Media Segments API enabled)
-- Manually or automatically created media segments in Jellyfin (e.g., intro, outro)
-- *Jellyfin-Kodi* addon installed and configured
-- Jellyfin instance reachable from Kodi
+
+- **Kodi 21 (Omega) or newer**
+- **Jellyfin for Kodi addon** - installed and configured
+- **Jellyfin server 10.9+** with [Intro Skipper plugin](https://github.com/intro-skipper/intro-skipper)
 
 ## Installation
 
-1. Download the addon code (the repository zip).
-2. Place the `service.jellyskip` folder in your Kodi `addons` directory.
-3. (Re)start Kodi.
-4. Enable/Install the addon.
-5. Enjoy!
+### Option 1: Install via Repository (Recommended)
 
-## Usage
+This method enables automatic updates.
 
-Once installed, Jellyskip will automatically detect media segments from Jellyfin and present a button to skip these segments during playback.
+1. Download the repository: [repository.andy2244.zip](https://github.com/Andy2244/kodi-repo/raw/main/zips/repository.andy2244/repository.andy2244-1.0.0.zip)
+2. In Kodi: **Settings** → **Add-ons** → **Install from zip file**
+3. Select the downloaded `repository.andy2244-1.0.0.zip`
+4. Go to **Install from repository** → **Andy2244's Repository** → **Services** → **Jellyskip**
+5. Click **Install**
 
-## Inspiration
+### Option 2: Manual Install from ZIP
 
-This project was inspired (and code was taken from) by the following repositories and projects:
+1. Download the latest release: [service.jellyskip.zip](https://github.com/Andy2244/kodi-repo/raw/main/zips/service.jellyskip/service.jellyskip-1.1.0.zip)
+2. In Kodi: **Settings** → **Add-ons** → **Install from zip file**
+3. Select the downloaded zip
 
-- [service.upnext (Jellyfin hack)](https://github.com/qwerty12/service.upnext/)
-- [service.upnext (original repo)](https://github.com/im85288/service.upnext)
-- [jellyfin-kodi](https://github.com/jellyfin/jellyfin-kodi)
-- [Titan Bingie Skin Mod for Button Design](https://forum.kodi.tv/showthread.php?tid=355993)
+> **CoreELEC/LibreELEC:** If installation fails, go to **Power** → **Restart Kodi** and try again.
 
-## Roadmap
+## Settings
 
-Depending on whether this feature is ported to the Jellyfin-Kodi addon or any other addon, this project may be deprecated.
-The current version is very simple and includes the following planned improvements:
+Access via: **Settings** → **Add-ons** → **My add-ons** → **Services** → **Jellyskip** → **Configure**
 
-- Settings to define which segments to present a button for, skip delays, etc.
-- Bug fixes
-- Code cleanup
+| Setting | Description |
+|---------|-------------|
+| **Auto Skip** | Automatically skip segments without showing a button. Shows a brief notification instead. On initial playback, there's a 5-second delay to allow your TV to sync. |
 
-## Potential Issues
+## Troubleshooting
 
-**Tested using native paths only and on Kodi Version 21.2! Experience may vary on other versions**
+### Skip button doesn't appear
+- Ensure [Intro Skipper plugin](https://github.com/intro-skipper/intro-skipper) is installed on your Jellyfin server
+- Check that media has detected segments (visible in Jellyfin web UI)
+- Verify Jellyfin for Kodi addon is configured and synced
 
-**Quickly thrown together, proof of concept!**
+### Auto Skip not working after changing settings
+- Settings take effect immediately, no restart needed
+- If issues persist, restart Kodi
+
+## Credits
+
+Based on [SgtJalau/service.jellyskip](https://github.com/SgtJalau/service.jellyskip) with community improvements.
 
 ## License
 
-This project is licensed under the GNU General Public License, v2. See the `LICENSE` file for more details.
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request on GitHub.
-
-## Contact
-
-For any questions or issues, please open an issue on GitHub.
+GNU General Public License, v2
