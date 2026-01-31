@@ -30,7 +30,7 @@ No download required - add the repo URL directly in Kodi:
 
 ### Option 2: Manual ZIP Download
 
-1. Download: [repository.andy2244.zip](https://github.com/Andy2244/kodi-repo/raw/main/zips/repository.andy2244/repository.andy2244-1.0.0.zip)
+1. Download: [repository.andy2244.zip](https://github.com/Andy2244/kodi-repo/raw/main/zips/repository.andy2244/repository.andy2244-1.0.1.zip)
 2. In Kodi: **Settings** → **Add-ons** → **Install from zip file**
 3. Select the downloaded zip
 4. Then install Jellyskip from the repository
