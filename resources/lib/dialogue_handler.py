@@ -50,7 +50,7 @@ class DialogueHandler:
             # We are past the segment, no need to schedule
             return
 
-        # If we seeked back to before the end of the segment, reset last_item to allow re-showing
+        # If we're before the end of the last segment, reset to allow re-showing
         if self.last_item and current_seconds < self.last_item.get_end_seconds():
             self.last_item = None
 
@@ -111,7 +111,6 @@ class DialogueHandler:
         """
         if not self.last_item or not item:
             return False
-
         return self.last_item == item
 
     def is_last_item_segment(self):
@@ -136,7 +135,6 @@ class DialogueHandler:
         :param item: the segment item to open the dialogue for
         :return: None
         """
-
         if self.is_last_item(item):
             LOG.info(f"Skipping dialogue for {item.get_segment_type_display()} at {item.get_start_seconds()} as it is the same as the last item")
             return

@@ -18,10 +18,13 @@ LOG = LazyLogger(__name__)
 
 class JellySkipMonitor(xbmc.Monitor):
 
+    SEEK_DEBOUNCE_SECONDS = 3  # Wait after seek before showing dialogue
 
     def __init__(self):
         xbmc.Monitor.__init__(self)
         self.player = player.JellySkipPlayer(self)
+        self._seek_debounce_thread = None
+        self._seek_debounce_active = False
         LOG.info('Init monitor')
 
     def start(self, **kwargs):
@@ -32,7 +35,23 @@ class JellySkipMonitor(xbmc.Monitor):
         self.stop()
 
     def _event_handler_player_change_playback(self, **_kwargs):
-        LOG.info('JellySkipMonitor: player general event')
+        if self._seek_debounce_active:
+            return  # Skip tracking during seek debounce
+        self.start_tracking()
+
+    def _event_handler_player_seek(self, **_kwargs):
+        dialogue_handler.last_item = None  # Always reset on seek to allow re-showing
+        dialogue_handler.cancel_scheduled()
+        self._seek_debounce_active = True
+        # Debounce: cancel previous timer and start new one
+        if self._seek_debounce_thread:
+            self._seek_debounce_thread.cancel()
+        self._seek_debounce_thread = utils.run_threaded(
+            self._on_seek_debounce, delay=self.SEEK_DEBOUNCE_SECONDS)
+
+    def _on_seek_debounce(self):
+        self._seek_debounce_thread = None
+        self._seek_debounce_active = False
         self.start_tracking()
 
     def _event_handler_player_stop(self, **_kwargs):
@@ -59,7 +78,7 @@ class JellySkipMonitor(xbmc.Monitor):
         # 'Player.OnPause': _event_handler_player_change_playback,
         'Player.OnResume': _event_handler_player_change_playback,
         # 'Player.OnSpeedChanged': _event_handler_player_change_playback,
-        'Player.OnSeek': _event_handler_player_change_playback,
+        'Player.OnSeek': _event_handler_player_seek,
         'Player.OnStop': _event_handler_player_stop,
         'Player.OnPlay': _event_handler_player_start,
         'Player.OnAVChange': _event_handler_player_change_playback,
