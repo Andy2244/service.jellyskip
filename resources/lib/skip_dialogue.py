@@ -26,6 +26,7 @@ class SkipSegmentDialogue(xbmcgui.WindowXMLDialog):
         # Read setting here (not at module level) so changes take effect without restart
         autoskip = xbmcaddon.Addon('service.jellyskip').getSettingBool('autoskip')
         if autoskip:
+            xbmc.executebuiltin('Notification(Jellyskip, Skipped %s, 2000)' % self.segment_type)
             self.onClick(OK_BUTTON)
             return
         skip_label = 'Skip ' + str(self.segment_type)
