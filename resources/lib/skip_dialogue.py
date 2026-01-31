@@ -1,4 +1,5 @@
 import xbmcgui, xbmc, xbmcaddon
+import time
 from xbmcgui import ACTION_NAV_BACK, ACTION_PREVIOUS_MENU, ACTION_STOP
 
 import helper.utils as utils
@@ -17,21 +18,31 @@ LOG = LazyLogger(__name__)
 
 class SkipSegmentDialogue(xbmcgui.WindowXMLDialog):
 
-    def __init__(self, xmlFile, resourcePath, seek_time_seconds, segment_type, is_initial_play=False):
+    def __init__(self, xmlFile, resourcePath, seek_time_seconds, segment_type, is_initial_play=False, play_start_time=0):
         self.seek_time_seconds = seek_time_seconds
         self.segment_type = segment_type
         self.player = xbmc.Player()
         self.is_initial_play = is_initial_play
+        self.play_start_time = play_start_time
 
     def onInit(self):
         # Read setting here (not at module level) so changes take effect without restart
         autoskip = xbmcaddon.Addon('service.jellyskip').getSettingBool('autoskip')
         if autoskip:
+            # Close dialog immediately to prevent visual artifacts
+            self.close()
             # Delay 5 seconds on initial play to let TV sync/blank settle
-            if self.is_initial_play:
+            # Only apply delay if we're within 15 seconds of pressing play in Kodi UI
+            if self.is_initial_play and (time.time() - self.play_start_time) < 15:
                 xbmc.sleep(5000)
             xbmc.executebuiltin('Notification(Jellyskip, Skipped %s, 3000)' % self.segment_type)
-            self.onClick(OK_BUTTON)
+            # Do the seek directly instead of going through onClick
+            if self.player.isPlaying():
+                remaining_seconds = self.player.getTotalTime() - self.seek_time_seconds
+                if remaining_seconds < MIN_REMAINING_SECONDS:
+                    self.player.seekTime(self.player.getTotalTime() - MIN_REMAINING_SECONDS)
+                else:
+                    self.player.seekTime(self.seek_time_seconds)
             return
         skip_label = 'Skip ' + str(self.segment_type)
         skip_button = self.getControl(OK_BUTTON)

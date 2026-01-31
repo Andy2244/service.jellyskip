@@ -1,4 +1,5 @@
 import xbmc, xbmcaddon
+import time
 
 from helper import LazyLogger
 import player
@@ -66,6 +67,7 @@ class JellySkipMonitor(xbmc.Monitor):
         jf_hack.reset_itemid()
         dialogue_handler.cancel_scheduled()
         dialogue_handler.is_initial_play = True
+        dialogue_handler.play_start_time = time.time()
 
     def _event_handler_jellyskip_dialogue_closed(self, **_kwargs):
         LOG.info('JellySkipMonitor: player dialogue closed event')
