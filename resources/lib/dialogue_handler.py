@@ -24,6 +24,7 @@ class DialogueHandler:
         self.last_item = None
         self.is_initial_play = False
         self.play_start_time = 0
+        self.autoskip_pending = False  # Flag to skip debounce re-tracking after autoskip
 
     def schedule_skip_gui(self, item: MediaSegmentItem, current_seconds):
         """

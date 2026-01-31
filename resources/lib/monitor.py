@@ -41,7 +41,8 @@ class JellySkipMonitor(xbmc.Monitor):
         self.start_tracking()
 
     def _event_handler_player_seek(self, **_kwargs):
-        dialogue_handler.last_item = None  # Always reset on seek to allow re-showing
+        # Don't reset last_item here - let schedule_skip_gui handle it based on position
+        # This prevents autoskip from triggering a re-detection loop
         dialogue_handler.cancel_scheduled()
         self._seek_debounce_active = True
         # Debounce: cancel previous timer and start new one
@@ -53,6 +54,10 @@ class JellySkipMonitor(xbmc.Monitor):
     def _on_seek_debounce(self):
         self._seek_debounce_thread = None
         self._seek_debounce_active = False
+        # Skip re-tracking if this seek was from autoskip
+        if dialogue_handler.autoskip_pending:
+            dialogue_handler.autoskip_pending = False
+            return
         self.start_tracking()
 
     def _event_handler_player_stop(self, **_kwargs):

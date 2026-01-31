@@ -1,3 +1,6 @@
+1.1.5
+- Fix autoskip loop caused by debounce re-tracking
+
 1.1.4
 - Fix 5s startup delay to only apply within 15s of pressing play
 - Fix autoskip UI artifact (empty button outline)

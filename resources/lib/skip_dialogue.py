@@ -38,11 +38,19 @@ class SkipSegmentDialogue(xbmcgui.WindowXMLDialog):
             xbmc.executebuiltin('Notification(Jellyskip, Skipped %s, 3000)' % self.segment_type)
             # Do the seek directly instead of going through onClick
             if self.player.isPlaying():
-                remaining_seconds = self.player.getTotalTime() - self.seek_time_seconds
-                if remaining_seconds < MIN_REMAINING_SECONDS:
-                    self.player.seekTime(self.player.getTotalTime() - MIN_REMAINING_SECONDS)
-                else:
-                    self.player.seekTime(self.seek_time_seconds)
+                current_time = self.player.getTime()
+                total_time = self.player.getTotalTime()
+                # Only seek if target is ahead of current position and total_time is valid
+                if total_time > 0 and self.seek_time_seconds > current_time:
+                    # Set flag to prevent debounce re-tracking from triggering another skip
+                    # Import here to avoid circular import
+                    from dialogue_handler import dialogue_handler
+                    dialogue_handler.autoskip_pending = True
+                    remaining_seconds = total_time - self.seek_time_seconds
+                    if remaining_seconds < MIN_REMAINING_SECONDS:
+                        self.player.seekTime(total_time - MIN_REMAINING_SECONDS)
+                    else:
+                        self.player.seekTime(self.seek_time_seconds)
             return
         skip_label = 'Skip ' + str(self.segment_type)
         skip_button = self.getControl(OK_BUTTON)
