@@ -1,1 +1,19 @@
-1.0.0 Initial release
+1.1.3
+- Add 3s debounce after seek to prevent immediate auto-skip
+- Fix seek-back detection for intros starting at 0s
+- Block tracking during seek debounce to prevent GUI hiccups
+
+1.1.2
+- Fix seek-back detection for segments starting at 0s
+
+1.1.1
+- Open settings directly when selecting addon
+
+1.1.0
+- Add Auto Skip feature with optional 5s delay on initial play
+- Add skip notification when auto-skip triggers
+- Fix replay/seek-back detection to re-show dialogue
+- Add settings UI for Auto Skip toggle
+
+1.0.0
+- Initial release
