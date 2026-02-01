@@ -141,6 +141,14 @@ class JellySkipMonitor(xbmc.Monitor):
 
         next_item = media_segments.get_next_item(time_seconds, only_upcoming)
 
+        # Validate segment: reject if start time exceeds video duration (wrong video's segments)
+        if next_item and duration_seconds > 0:
+            if next_item.get_start_seconds() > duration_seconds:
+                LOG.warning(f"Rejecting invalid segment: start={next_item.get_start_seconds()}s > duration={duration_seconds}s")
+                jf_hack.reset_itemid()  # Clear cached segments
+                dialogue_handler.close_gui()
+                return
+
         if not next_item:
             # Close any open dialogues, if any
             dialogue_handler.close_gui()

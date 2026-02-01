@@ -14,6 +14,7 @@ CENTER_Y = 6
 CENTER_X = 2
 
 MIN_REMAINING_SECONDS = 5
+MAX_DISPLAY_SECONDS = 6  # Maximum time to show the skip button before auto-hide
 LOG = LazyLogger(__name__)
 
 class SkipSegmentDialogue(xbmcgui.WindowXMLDialog):
@@ -62,26 +63,23 @@ class SkipSegmentDialogue(xbmcgui.WindowXMLDialog):
 
     def schedule_close_action(self):
         """
-        Schedule the dialog to close automatically when the segment ends.
+        Schedule the dialog to close after MAX_DISPLAY_SECONDS or when segment ends, whichever is sooner.
         :return: None
         """
 
         seconds_till_segment_end = self.get_seconds_till_segment_end()
+        display_time = min(seconds_till_segment_end, MAX_DISPLAY_SECONDS)
 
-        if seconds_till_segment_end > 0:
-            utils.run_threaded(self.on_automatic_close, delay=seconds_till_segment_end, kwargs={})
+        if display_time > 0:
+            utils.run_threaded(self.on_automatic_close, delay=display_time, kwargs={})
 
     def on_automatic_close(self):
         """
         Close the dialog automatically. This is called by the scheduled thread.
         :return: None
         """
-
         self.close()
-
-        LOG.info("JellySkip: Auto closing dialogue")
-        sender = "service.jellyskip"
-        xbmc.executebuiltin("NotifyAll(%s, %s, %s)" % (sender, "Jellyskip.DialogueClosed", {}))
+        xbmc.executebuiltin("NotifyAll(%s, %s, %s)" % ("service.jellyskip", "Jellyskip.DialogueClosed", {}))
 
     def onAction(self, action):
         if action in (ACTION_NAV_BACK, ACTION_PREVIOUS_MENU, ACTION_STOP):

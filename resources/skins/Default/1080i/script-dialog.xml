@@ -22,22 +22,19 @@
             <itemgap>25</itemgap>
             <height>64</height>
             <width>auto</width>
-            <control type="grouplist">
-                <control type="button" id="2101">
-                    <description>Skip Segment Button</description>
-                    <width>auto</width>
-                    <height>64</height>
-                    <aligny>center</aligny>
-                    <right>40</right>
-                    <label/>
-                    <font>font12</font>
-                    <textcolor>FFFFFFFF</textcolor>
-                    <focusedcolor>FFFFFFFF</focusedcolor>
-                    <shadowcolor>00000000</shadowcolor>
-                    <texturenofocus>button-nofo.png</texturenofocus>
-                    <texturefocus>button-fo.png</texturefocus>
-                    <textoffsetx>10</textoffsetx>
-                </control>
+            <control type="button" id="2101">
+                <description>Skip Segment Button</description>
+                <width>auto</width>
+                <height>64</height>
+                <aligny>center</aligny>
+                <label/>
+                <font>font12</font>
+                <textcolor>FFFFFFFF</textcolor>
+                <focusedcolor>FFFFFFFF</focusedcolor>
+                <shadowcolor>00000000</shadowcolor>
+                <texturenofocus>button-nofo.png</texturenofocus>
+                <texturefocus>button-fo.png</texturefocus>
+                <textoffsetx>10</textoffsetx>
             </control>
         </control>
     </controls>

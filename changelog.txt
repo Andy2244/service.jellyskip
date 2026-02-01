@@ -1,3 +1,9 @@
+1.1.6
+- Fix stale segment data causing wrong skip times
+- Add segment validation: reject segments starting after video duration
+- Add 6 second max button display time (auto-hide)
+- Add solid background color behind skip button
+
 1.1.5
 - Fix autoskip loop caused by debounce re-tracking
 

@@ -63,17 +63,10 @@ class JellyfinHack:
             if self.jellyfin_itemid:
                 self.setup_jellyfin_server()
                 api_endpoint = f"MediaSegments/{self.jellyfin_itemid}"
-
                 ret = self.make_request(api_endpoint)
-
-                media_segments_response = MediaSegmentResponse.from_json(ret)
-                self.media_segments = media_segments_response
-
-                LOG.info(f"MediaSegments: {media_segments_response}")
-            else:
-                LOG.info("No itemid")
-        except Exception:
-            pass
+                self.media_segments = MediaSegmentResponse.from_json(ret)
+        except Exception as e:
+            LOG.error(f"Error fetching segments: {e}")
         finally:
             return ret
 
