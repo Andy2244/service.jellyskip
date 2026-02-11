@@ -1,4 +1,5 @@
 import xbmc, xbmcaddon
+import time
 import helper.utils as utils
 
 from skip_dialogue import SkipSegmentDialogue
@@ -24,7 +25,7 @@ class DialogueHandler:
         self.last_item = None
         self.is_initial_play = False
         self.play_start_time = 0
-        self.autoskip_pending = False  # Flag to skip debounce re-tracking after autoskip
+        self.autoskip_time = 0  # Timestamp of last auto-skip seek
 
     def schedule_skip_gui(self, item: MediaSegmentItem, current_seconds):
         """
@@ -52,9 +53,11 @@ class DialogueHandler:
             # We are past the segment, no need to schedule
             return
 
-        # If we're before the end of the last segment, reset to allow re-showing
+        # If we're before the end of the last segment, reset to allow re-showing (seek-back detection)
+        # But skip this reset if we just did an auto-skip (imprecise seek may land before segment end)
         if self.last_item and current_seconds < self.last_item.get_end_seconds():
-            self.last_item = None
+            if time.time() - self.autoskip_time > 10:
+                self.last_item = None
 
         if item.get_start_seconds() < current_seconds:
             self.open_gui(item)

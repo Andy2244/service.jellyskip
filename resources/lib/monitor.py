@@ -54,11 +54,17 @@ class JellySkipMonitor(xbmc.Monitor):
     def _on_seek_debounce(self):
         self._seek_debounce_thread = None
         self._seek_debounce_active = False
-        # Skip re-tracking if this seek was from autoskip
-        if dialogue_handler.autoskip_pending:
-            dialogue_handler.autoskip_pending = False
-            return
-        self.start_tracking()
+        # Wait for playback to actually resume (not buffering/caching)
+        for _ in range(20):  # up to 10s (20 * 0.5s)
+            if not self.player.isPlayingVideo():
+                return
+            if self._seek_debounce_active:
+                return  # A newer seek has taken over
+            if not xbmc.getCondVisibility('Player.Caching'):
+                break
+            xbmc.sleep(500)
+        if not self._seek_debounce_active:
+            self.start_tracking()
 
     def _event_handler_player_stop(self, **_kwargs):
         LOG.info('JellySkipMonitor: player stop event')

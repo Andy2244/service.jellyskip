@@ -41,12 +41,11 @@ class SkipSegmentDialogue(xbmcgui.WindowXMLDialog):
             if self.player.isPlaying():
                 current_time = self.player.getTime()
                 total_time = self.player.getTotalTime()
-                # Only seek if target is ahead of current position and total_time is valid
-                if total_time > 0 and self.seek_time_seconds > current_time:
-                    # Set flag to prevent debounce re-tracking from triggering another skip
-                    # Import here to avoid circular import
+                skip_distance = self.seek_time_seconds - current_time
+                # Only seek if target is ahead and skip distance is meaningful (> 5s)
+                if total_time > 0 and skip_distance > 5:
                     from dialogue_handler import dialogue_handler
-                    dialogue_handler.autoskip_pending = True
+                    dialogue_handler.autoskip_time = time.time()
                     remaining_seconds = total_time - self.seek_time_seconds
                     if remaining_seconds < MIN_REMAINING_SECONDS:
                         self.player.seekTime(total_time - MIN_REMAINING_SECONDS)

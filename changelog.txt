@@ -1,3 +1,9 @@
+1.1.7
+- Fix double auto-skip after imprecise seek landing
+- Add minimum skip distance (5s) to prevent pointless micro-seeks
+- Buffering-aware debounce: wait for playback to resume before tracking
+- Guard against rapid seek race conditions
+
 1.1.6
 - Fix stale segment data causing wrong skip times
 - Add segment validation: reject segments starting after video duration
